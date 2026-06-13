@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - TypeRush</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="logo">Type<span>Rush</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/game.html">Play</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/profile.html" id="profileLink" class="hidden">Profile</a>
+      <button class="btn btn-outline btn-sm" id="loginBtn">Login</button>
+      <button class="btn btn-primary btn-sm" id="registerBtn">Sign Up</button>
+      <div id="userMenu" class="hidden" style="align-items:center;gap:0.8rem;display:none">
+        <span class="username-text" style="color:var(--accent);font-weight:600"></span>
+        <button class="btn btn-danger btn-sm" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1 class="mb-2" style="font-size:2rem">Leaderboard</h1>
+
+    <div class="game-box">
+      <div class="leaderboard-controls">
+        <div class="difficulty-selector">
+          <button class="diff-btn active" data-diff="">All</button>
+          <button class="diff-btn" data-diff="easy">Easy</button>
+          <button class="diff-btn" data-diff="medium">Medium</button>
+          <button class="diff-btn" data-diff="hard">Hard</button>
+          <button class="diff-btn" data-diff="expert">Expert</button>
+        </div>
+        <span style="color:var(--text-dim);font-size:0.9rem" id="totalCount"></span>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>WPM</th>
+              <th>Accuracy</th>
+              <th>Difficulty</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>TypeRush &mdash; Compete for the top spot</p>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    let currentPage = 1;
+    let currentDifficulty = '';
+    let totalPages = 1;
+
+    async function loadLeaderboard() {
+      const body = document.getElementById('leaderboardBody');
+      body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Loading...</td></tr>';
+
+      try {
+        const data = await api.leaderboard.get({ difficulty: currentDifficulty || undefined, page: currentPage, limit: 20 });
+        totalPages = Math.ceil(data.total / 20);
+        document.getElementById('totalCount').textContent = `${data.total} total scores`;
+
+        if (data.scores.length === 0) {
+          body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-dim)">No scores yet. Play a game first!</td></tr>';
+          renderPagination();
+          return;
+        }
+
+        body.innerHTML = data.scores.map((s, i) => {
+          const rank = (currentPage - 1) * 20 + i + 1;
+          const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
+          const date = new Date(s.created_at).toLocaleDateString();
+          const diffLabel = s.difficulty.charAt(0).toUpperCase() + s.difficulty.slice(1);
+          return `<tr>
+            <td><span class="rank-badge ${rankClass}">${rank}</span></td>
+            <td style="font-weight:600">${s.username}</td>
+            <td style="color:var(--accent);font-weight:700">${s.wpm}</td>
+            <td>${s.accuracy}%</td>
+            <td>${diffLabel}</td>
+            <td style="color:var(--text-dim);font-size:0.85rem">${date}</td>
+          </tr>`;
+        }).join('');
+
+        renderPagination();
+      } catch (err) {
+        body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--incorrect)">Error: ${err.message}</td></tr>`;
+      }
+    }
+
+    function renderPagination() {
+      const container = document.getElementById('pagination');
+      if (totalPages <= 1) { container.innerHTML = ''; return; }
+
+      let html = '';
+      html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>Prev</button>`;
+
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+          html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+        } else if (i === currentPage - 3 || i === currentPage + 3) {
+          html += `<button class="page-btn" disabled>...</button>`;
+        }
+      }
+
+      html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>Next</button>`;
+      container.innerHTML = html;
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      loadLeaderboard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.diff-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentDifficulty = btn.dataset.diff;
+        currentPage = 1;
+        loadLeaderboard();
+      });
+    });
+
+    loadLeaderboard();
+  </script>
+</body>
+</html>

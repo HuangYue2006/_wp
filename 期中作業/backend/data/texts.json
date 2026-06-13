@@ -1,0 +1,36 @@
+{
+  "easy": [
+    "The quick brown fox jumps over the lazy dog.",
+    "A journey of a thousand miles begins with a single step.",
+    "To be or not to be, that is the question.",
+    "Practice makes perfect, keep on typing.",
+    "The only way to do great work is to love what you do.",
+    "Life is what happens when you are busy making other plans.",
+    "In the middle of difficulty lies opportunity.",
+    "Simplicity is the ultimate sophistication.",
+    "It does not matter how slowly you go as long as you do not stop.",
+    "The best time to plant a tree was twenty years ago."
+  ],
+  "medium": [
+    "Technology is best when it brings people together. The internet has transformed how we communicate, learn, and share ideas across the globe.",
+    "The art of programming is the art of organizing complexity. A well-written program is not just functional but also readable and maintainable by others.",
+    "In the world of software development, the best solutions often emerge from simplicity. Avoid over-engineering and focus on solving the actual problem.",
+    "Data is the new oil. It is valuable, but if unrefined it cannot really be used. It has to be changed into something of value to drive decisions.",
+    "The function of good software is to make the complex appear to be simple. Great user interfaces hide enormous complexity beneath the surface.",
+    "Innovation distinguishes between a leader and a follower. Those who dare to try new approaches often discover better ways of doing things.",
+    "Security is not a product, but a process. It requires constant vigilance, regular updates, and a proactive approach to identifying vulnerabilities."
+  ],
+  "hard": [
+    "const fibonacci = (n) => { if (n <= 1) return n; let a = 0, b = 1; for (let i = 2; i <= n; i++) { const temp = a + b; a = b; b = temp; } return b; };",
+    "def quicksort(arr): if len(arr) <= 1: return arr; pivot = arr[len(arr) // 2]; left = [x for x in arr if x < pivot]; middle = [x for x in arr if x == pivot]; right = [x for x in arr if x > pivot]; return quicksort(left) + middle + quicksort(right);",
+    "class TreeNode { constructor(val) { this.val = val; this.left = null; this.right = null; } } function inorder(root) { if (!root) return []; return [...inorder(root.left), root.val, ...inorder(root.right)]; }",
+    "app = FastAPI(); @app.get('/api/users/{user_id}') async def get_user(user_id: int, db: Session = Depends(get_db)): user = db.query(User).filter(User.id == user_id).first(); if not user: raise HTTPException(status_code=404); return user;",
+    ".container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; padding: 2rem; transition: all 0.3s ease-in-out; } .item:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }"
+  ],
+  "expert": [
+    "The asymptotic time complexity of this algorithm is O(n log n) in the average case, but degenerates to O(n^2) when the input is already sorted and the pivot selection is poor. To mitigate this, randomized quicksort selects a random pivot element, achieving expected O(n log n) performance regardless of input distribution.",
+    "A microservices architecture decomposes an application into independently deployable services that communicate over a network. Each service encapsulates its own database and business logic, enabling teams to deploy, scale, and maintain services independently. However, this comes at the cost of increased network latency and operational complexity.",
+    "In functional programming, pure functions avoid side effects and always produce the same output for the same input. Higher-order functions can take other functions as arguments or return them as results. These principles lead to code that is easier to test, reason about, and parallelize across multiple CPU cores.",
+    "The CAP theorem states that a distributed data store can only provide two of three guarantees: Consistency, Availability, and Partition Tolerance. In practice, network partitions are inevitable, so systems must choose between consistency and availability. This fundamental trade-off shapes the design of modern database systems."
+  ]
+}

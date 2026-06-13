@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play - TypeRush</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="logo">Type<span>Rush</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/game.html">Play</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/profile.html" id="profileLink" class="hidden">Profile</a>
+      <button class="btn btn-outline btn-sm" id="loginBtn">Login</button>
+      <button class="btn btn-primary btn-sm" id="registerBtn">Sign Up</button>
+      <div id="userMenu" class="hidden" style="align-items:center;gap:0.8rem;display:none">
+        <span class="username-text" style="color:var(--accent);font-weight:600"></span>
+        <button class="btn btn-danger btn-sm" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="game-box">
+      <div class="game-header">
+        <div class="game-stats">
+          <div class="game-stat">
+            <div class="value" id="timer">30.0</div>
+            <div class="label">Time</div>
+          </div>
+          <div class="game-stat">
+            <div class="value" id="wpm">0</div>
+            <div class="label">WPM</div>
+          </div>
+          <div class="game-stat">
+            <div class="value" id="accuracy">100</div>
+            <div class="label">Accuracy %</div>
+          </div>
+        </div>
+        <div class="difficulty-selector">
+          <button class="diff-btn active" data-diff="easy">Easy</button>
+          <button class="diff-btn" data-diff="medium">Medium</button>
+          <button class="diff-btn" data-diff="hard">Hard</button>
+          <button class="diff-btn" data-diff="expert">Expert</button>
+        </div>
+      </div>
+
+      <div class="text-display" id="textDisplay"></div>
+
+      <input type="text" id="gameInput" class="input-area-hidden" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+      <div class="game-controls">
+        <button class="btn btn-accent" id="startBtn">Start Game</button>
+        <button class="btn btn-outline" id="resetBtn" disabled>Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Countdown Overlay -->
+  <div class="countdown-overlay" id="countdownOverlay">
+    <div class="countdown-number" id="countdownNumber">3</div>
+  </div>
+
+  <!-- Results Overlay -->
+  <div class="results-overlay" id="resultsOverlay">
+    <div class="results-card">
+      <h2>Round Complete!</h2>
+      <div class="results-grid">
+        <div class="result-item">
+          <div class="r-value" id="resultWpm">0</div>
+          <div class="r-label">WPM</div>
+        </div>
+        <div class="result-item">
+          <div class="r-value" id="resultAccuracy">0%</div>
+          <div class="r-label">Accuracy</div>
+        </div>
+        <div class="result-item">
+          <div class="r-value" id="resultChars">0/0</div>
+          <div class="r-label">Correct/Total</div>
+        </div>
+        <div class="result-item">
+          <div class="r-value" id="resultTime">0s</div>
+          <div class="r-label">Duration</div>
+        </div>
+      </div>
+      <button class="btn btn-accent" id="playAgainBtn">Play Again</button>
+      <button class="btn btn-outline" id="newTextBtn">New Text</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>TypeRush &mdash; Press any key to start</p>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/game.js"></script>
+</body>
+</html>

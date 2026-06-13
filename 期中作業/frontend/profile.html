@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - TypeRush</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="logo">Type<span>Rush</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/game.html">Play</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/profile.html" id="profileLink" class="hidden">Profile</a>
+      <button class="btn btn-outline btn-sm" id="loginBtn">Login</button>
+      <button class="btn btn-primary btn-sm" id="registerBtn">Sign Up</button>
+      <div id="userMenu" class="hidden" style="align-items:center;gap:0.8rem;display:none">
+        <span class="username-text" style="color:var(--accent);font-weight:600"></span>
+        <button class="btn btn-danger btn-sm" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div id="notLoggedIn" class="text-center" style="margin-top:4rem">
+      <h2 style="margin-bottom:1rem">Please Log In</h2>
+      <p style="color:var(--text-dim);margin-bottom:2rem">Sign in to view your typing history and statistics.</p>
+      <button class="btn btn-primary" id="loginRedirectBtn">Login</button>
+    </div>
+
+    <div id="profileContent" class="hidden">
+      <div class="profile-header">
+        <div class="profile-avatar" id="avatarInitial">U</div>
+        <div class="profile-info">
+          <h2 id="profileUsername">username</h2>
+          <p id="profileEmail">email@example.com</p>
+          <p id="profileJoined" style="font-size:0.85rem"></p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h3 class="mb-1">WPM Progress</h3>
+        <canvas id="wpmChart" height="250"></canvas>
+      </div>
+
+      <div class="history-table">
+        <h3 style="padding:1rem 1rem 0">Recent Games</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>WPM</th>
+              <th>Accuracy</th>
+              <th>Difficulty</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr><td colspan="5" style="text-align:center;color:var(--text-dim)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>TypeRush &mdash; Track your improvement</p>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    let chartInstance = null;
+
+    async function loadProfile() {
+      if (!isLoggedIn()) {
+        document.getElementById('notLoggedIn').classList.remove('hidden');
+        document.getElementById('profileContent').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('notLoggedIn').classList.add('hidden');
+      document.getElementById('profileContent').classList.remove('hidden');
+
+      const user = getUser();
+      if (user) {
+        document.getElementById('profileUsername').textContent = user.username;
+        document.getElementById('profileEmail').textContent = user.email;
+        document.getElementById('avatarInitial').textContent = user.username[0].toUpperCase();
+        document.getElementById('profileJoined').textContent = `Joined ${new Date(user.created_at).toLocaleDateString()}`;
+      }
+
+      try {
+        const scores = await api.game.history();
+        const body = document.getElementById('historyBody');
+
+        if (scores.length === 0) {
+          body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim)">No games played yet. Head to the game page!</td></tr>';
+          return;
+        }
+
+        body.innerHTML = scores.map(s => {
+          const date = new Date(s.created_at).toLocaleString();
+          const diffLabel = s.difficulty.charAt(0).toUpperCase() + s.difficulty.slice(1);
+          return `<tr>
+            <td style="font-size:0.85rem;color:var(--text-dim)">${date}</td>
+            <td style="color:var(--accent);font-weight:700">${s.wpm}</td>
+            <td>${s.accuracy}%</td>
+            <td>${diffLabel}</td>
+            <td>${Math.round(s.duration_seconds)}s</td>
+          </tr>`;
+        }).join('');
+
+        // Build chart (most recent 20, reversed for chronological)
+        const recentScores = scores.slice(0, 20).reverse();
+        const labels = recentScores.map((_, i) => `#${i + 1}`);
+        const wpmData = recentScores.map(s => s.wpm);
+
+        if (chartInstance) chartInstance.destroy();
+
+        const ctx = document.getElementById('wpmChart').getContext('2d');
+        chartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: 'WPM',
+              data: wpmData,
+              borderColor: '#6c63ff',
+              backgroundColor: 'rgba(108, 99, 255, 0.1)',
+              fill: true,
+              tension: 0.3,
+              pointBackgroundColor: '#6c63ff',
+              pointRadius: 4,
+            }],
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: '#8888a0' }, grid: { color: '#2a2a4a' } },
+              y: {
+                ticks: { color: '#8888a0' },
+                grid: { color: '#2a2a4a' },
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      } catch (err) {
+        document.getElementById('historyBody').innerHTML =
+          `<tr><td colspan="5" style="text-align:center;color:var(--incorrect)">Error: ${err.message}</td></tr>`;
+      }
+    }
+
+    document.getElementById('loginRedirectBtn').addEventListener('click', () => {
+      document.getElementById('loginBtn').click();
+    });
+
+    // Re-load profile when auth state changes
+    const origUpdateNavbar = updateNavbar;
+    updateNavbar = function() {
+      origUpdateNavbar();
+      if (window.location.pathname.includes('profile')) {
+        loadProfile();
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', loadProfile);
+  </script>
+</body>
+</html>
