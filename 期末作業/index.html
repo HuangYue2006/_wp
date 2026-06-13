@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript 期末作業總整理 — 黃品岳</title>
+  <style>
+    :root {
+      --teal: #0f766e;
+      --teal-dark: #115e59;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --code-bg: #1e293b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "PingFang TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      color: #fff;
+      padding: 2.5rem 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .header-content { position: relative; z-index: 2; }
+
+    .header h1 {
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .header .subtitle {
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+
+    .header .student-name {
+      display: inline-block;
+      margin-top: 0.6rem;
+      background: rgba(255,255,255,0.15);
+      padding: 0.25rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 5% 4rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border-color: rgba(15,118,110,0.2);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--teal);
+    }
+
+    .card-status {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: #d1fae5;
+      color: #059669;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .card-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .card-meta span {
+      display: inline-block;
+      background: var(--bg);
+      padding: 1px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      margin-right: 4px;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      max-height: 280px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      font-family: "Fira Code", "JetBrains Mono", "Consolas", monospace;
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: #e2e8f0;
+      tab-size: 2;
+    }
+
+    .code-block code {
+      white-space: pre;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+      background: rgba(15,118,110,0.1);
+      color: var(--teal);
+      border: 1px solid rgba(15,118,110,0.2);
+    }
+
+    .link-btn:hover {
+      opacity: 0.75;
+    }
+
+    @media (max-width: 640px) {
+      .card-header {
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .code-block {
+        max-height: 200px;
+        font-size: 0.72rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-content">
+      <h1>JavaScript 期末作業總整理</h1>
+      <p class="subtitle">平時作業 1～7 ｜ HTML / CSS / JavaScript / FastAPI / Git</p>
+      <span class="student-name">黃品岳</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HW1 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">HW1 — 個人網頁</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">本作業目標為建立個人簡單介紹網頁，使用 HTML 撰寫基本結構，包含姓名、簡介與聯絡方式。</div>
+      <div class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;個人網頁&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;黃品岳&lt;/h1&gt;
+  &lt;p&gt;我對程式設計有興趣，目標進入資訊工程學系。&lt;/p&gt;
+  &lt;p&gt;聯絡方式：example@gmail.com&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/HW1" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+    <!-- HW2 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">HW2 — 表單設計</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">本作業目標為練習 HTML 表單與不同輸入控制項，包括文字輸入、密碼、單選與多選。</div>
+      <div class="code-block"><code>&lt;form&gt;
+  帳號：&lt;input type="text"&gt;&lt;br&gt;
+  密碼：&lt;input type="password"&gt;&lt;br&gt;
+
+  性別：
+  &lt;input type="radio" name="gender"&gt;男
+  &lt;input type="radio" name="gender"&gt;女&lt;br&gt;
+
+  興趣：
+  &lt;input type="checkbox"&gt;程式
+  &lt;input type="checkbox"&gt;遊戲&lt;br&gt;
+
+  &lt;button type="submit"&gt;送出&lt;/button&gt;
+&lt;/form&gt;</code></div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/HW2" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+    <!-- HW3 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">HW3 — hello.js</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">本作業為 JavaScript 基礎輸出練習。</div>
+      <div class="code-block"><code>console.log("Hello World");</code></div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/HW3" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+    <!-- HW4 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">HW4 — JavaScript 基礎練習（10題）</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">本作業練習 if 判斷、迴圈、函數、陣列與物件等基礎語法。</div>
+      <div class="code-block"><code>let score = 80;
+if (score &gt;= 60) {
+  console.log("及格");
+}
+
+for (let i = 1; i &lt;= 5; i++) {
+  console.log(i);
+}
+
+let i = 1;
+while (i &lt;= 3) {
+  console.log(i);
+  i++;
+}
+
+function add(a, b) {
+  return a + b;
+}
+
+let arr = [1, 2, 3];
+
+let obj = { name: "Tom", age: 18 };
+
+let json = JSON.stringify(obj);
+
+arr.push(4);
+
+let newArr = arr.map(x =&gt; x * 2);
+
+function square(x) {
+  return x * x;
+}</code></div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/HW4" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+    <!-- HW5 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">HW5 — Opencode 網站專案（版本管理）</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">本作業使用 GitHub 進行網站專案版本控制與管理，透過不同版本紀錄開發流程。作業內容包含：建立網站專案、使用 Git 進行版本管理、每次修改進行 commit、完成最終版本網站。</div>
+      <div class="card-meta">
+        <span>Git</span>
+        <span>GitHub</span>
+        <span>版本控制</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/HW5" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+    <!-- HW6 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">HW6 — JavaScript 函數與參數（10題）</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">本作業練習函數、參數傳遞、預設值與 callback 概念。</div>
+      <div class="code-block"><code>function sum(a, b) {
+  return a + b;
+}
+
+const multiply = (a, b) =&gt; a * b;
+
+function greet(name = "Guest") {
+  return "Hello " + name;
+}
+
+function test() {
+  return 1;
+}
+
+let x = 10;
+
+function run(fn) {
+  fn();
+}
+
+const double = x =&gt; x * 2;
+
+function addItem(arr) {
+  arr.push(1);
+}
+
+function show() {
+  console.log(arguments);
+}
+
+const f = function() {
+  return 100;
+};</code></div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/HW6" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+    <!-- HW7 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">HW7 — Blog 網誌觀念練習（10題）</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">本作業為理解物件、陣列與網誌資料結構的操作方式。</div>
+      <div class="code-block"><code>const post = {
+  id: 1,
+  title: "Hello World",
+  content: "Markdown content"
+};
+
+console.log(post.title);
+console.log(post["title"]);
+
+post.title = "New Title";
+
+const { title, content } = post;
+
+const posts = [post];
+
+posts.map(p =&gt; console.log(p.title));
+
+JSON.stringify(posts);
+
+function renderPost(p) {
+  return p.title;
+}
+
+posts.push({ id: 2 });
+
+if (post.title) {
+  console.log("OK");
+}
+
+for (let p of posts) {
+  console.log(p.id);
+}</code></div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/HW7" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+    <!-- 期中作業 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">期中作業 — TypeRush 打字速度遊戲</div>
+        <span class="card-status">完成</span>
+      </div>
+      <div class="card-desc">FastAPI + Vanilla JS 實作打字測驗遊戲。支援 4 種難度（Easy / Medium / Hard / Expert）、30 秒即時挑戰、帳號系統（JWT 認證）、全球排行榜、個人統計圖表（Chart.js）。後端使用 SQLite 儲存使用者與分數資料。</div>
+      <div class="card-meta">
+        <span>FastAPI</span>
+        <span>JavaScript</span>
+        <span>SQLite</span>
+        <span>JWT</span>
+        <span>Chart.js</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://github.com/HuangYue2006/_wp/tree/master/期中作業" class="link-btn" target="_blank" rel="noopener">🔗 檢視程式碼</a>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>
