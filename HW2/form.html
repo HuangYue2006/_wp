@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>註冊與問卷調查表單</title>
+    <style>
+        body {
+            font-family: Microsoft JhengHei, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 500px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .radio-group input,
+        .checkbox-group input {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>註冊與問卷調查</h1>
+
+    <form>
+
+        <!-- 帳號 -->
+        <label>帳號：</label>
+        <input type="text" name="username" placeholder="請輸入帳號" required>
+
+        <!-- 密碼 -->
+        <label>密碼：</label>
+        <input type="password" name="password" placeholder="請輸入密碼" required>
+
+        <!-- Email -->
+        <label>Email：</label>
+        <input type="email" name="email" placeholder="example@gmail.com">
+
+        <!-- 電話 -->
+        <label>電話：</label>
+        <input type="tel" name="phone" placeholder="09xxxxxxxx">
+
+        <!-- 出生日期 -->
+        <label>出生日期：</label>
+        <input type="date" name="birthday">
+
+        <!-- 性別 -->
+        <label>性別：</label>
+        <div class="radio-group">
+            <input type="radio" name="gender" value="男">男
+            <input type="radio" name="gender" value="女">女
+            <input type="radio" name="gender" value="其他">其他
+        </div>
+
+        <br>
+
+        <!-- 興趣 -->
+        <label>興趣：</label>
+        <div class="checkbox-group">
+            <input type="checkbox" name="hobby" value="運動">運動
+            <input type="checkbox" name="hobby" value="音樂">音樂
+            <input type="checkbox" name="hobby" value="程式設計">程式設計
+            <input type="checkbox" name="hobby" value="遊戲">遊戲
+        </div>
+
+        <br><br>
+
+        <!-- 系級 -->
+        <label>系級：</label>
+        <select name="department">
+            <option>請選擇</option>
+            <option>資訊工程系一年級</option>
+            <option>資訊工程系二年級</option>
+            <option>資訊工程系三年級</option>
+            <option>資訊工程系四年級</option>
+        </select>
+
+        <!-- 上傳照片 -->
+        <label>上傳個人照片：</label>
+        <input type="file" name="photo">
+
+        <!-- 意見 -->
+        <label>意見回饋：</label>
+        <textarea name="comment" rows="5" placeholder="請輸入您的意見..."></textarea>
+
+        <!-- 送出 -->
+        <button type="submit">送出表單</button>
+
+    </form>
+</div>
+
+</body>
+</html>

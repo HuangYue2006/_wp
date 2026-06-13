@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="黃品岳的作品集">
+  <title>作品 | 黃品岳</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span>H</span>uangYue</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">首頁</a></li>
+        <li><a href="about.html">關於</a></li>
+        <li><a href="projects.html" class="active">作品</a></li>
+        <li><a href="contact.html">聯絡</a></li>
+        <li><button class="theme-toggle" id="themeToggle" aria-label="切換主題">🌙</button></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="選單">☰</button>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:calc(var(--nav-height) + 60px)">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">我的作品</h2>
+        <p class="section-subtitle">點擊卡片查看專案詳情</p>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <p style="text-align:center;color:var(--text-muted);grid-column:1/-1">載入中...</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+      <div class="project-langs" id="modalLangs"></div>
+      <a class="project-link btn btn-primary btn-sm" id="modalLink" target="_blank">在 GitHub 上查看 →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="https://github.com/HuangYue2006" target="_blank" aria-label="GitHub">GH</a>
+        <a href="mailto:pingyuanhuang109@gmail.com" aria-label="Email">✉</a>
+      </div>
+      <p>&copy; <span id="currentYear"></span> 黃品岳. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

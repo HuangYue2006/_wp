@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="聯絡黃品岳">
+  <title>聯絡 | 黃品岳</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span>H</span>uangYue</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">首頁</a></li>
+        <li><a href="about.html">關於</a></li>
+        <li><a href="projects.html">作品</a></li>
+        <li><a href="contact.html" class="active">聯絡</a></li>
+        <li><button class="theme-toggle" id="themeToggle" aria-label="切換主題">🌙</button></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="選單">☰</button>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:calc(var(--nav-height) + 60px)">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">與我聯絡</h2>
+        <p class="section-subtitle">有任何想法或合作機會，歡迎與我聯繫</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>聯絡方式</h3>
+          <p>你可以透過以下管道找到我，我會盡快回覆！</p>
+          <div class="contact-links">
+            <a href="https://github.com/HuangYue2006" target="_blank" class="contact-link">
+              <span class="icon">GH</span>
+              <div>
+                <div class="label">GitHub</div>
+                <div class="value">@HuangYue2006</div>
+              </div>
+            </a>
+            <a href="mailto:pingyuanhuang109@gmail.com" class="contact-link">
+              <span class="icon">✉</span>
+              <div>
+                <div class="label">Email</div>
+                <div class="value">pingyuanhuang109@gmail.com</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div>
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="form-group">
+              <label for="name">姓名</label>
+              <input type="text" id="name" placeholder="你的名字">
+              <span class="error"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="your@email.com">
+              <span class="error"></span>
+            </div>
+            <div class="form-group">
+              <label for="message">訊息</label>
+              <textarea id="message" placeholder="你想說什麼..."></textarea>
+              <span class="error"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">發送訊息 →</button>
+          </form>
+          <div class="form-success" id="formSuccess">
+            <div class="icon">✓</div>
+            <h3>訊息已送出！</h3>
+            <p>感謝你的來信，我會盡快回覆。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="https://github.com/HuangYue2006" target="_blank" aria-label="GitHub">GH</a>
+        <a href="mailto:pingyuanhuang109@gmail.com" aria-label="Email">✉</a>
+      </div>
+      <p>&copy; <span id="currentYear"></span> 黃品岳. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
